@@ -14,7 +14,7 @@ PHP Web Control Panel → PHP REST API → MySQL
 |-----------|--------------|---------|
 | ![Dashboard](docs/screenshots/dashboard.png) | ![Send Message](docs/screenshots/send-message.png) | ![Workers](docs/screenshots/workers.png) |
 
-> Sample UI only — no real phone numbers, tokens, or chat sessions.
+> Real local UI screenshots — phone numbers and tokens redacted.
 
 ## Important limitations
 
