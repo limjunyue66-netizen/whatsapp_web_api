@@ -2,7 +2,7 @@
 
 ## 1. Database
 
-MySQL 8+ must be running. Set credentials in `web/includes/config.local.php` (copy from `.example`).
+MySQL 8+ must be running. Set credentials in `web/includes/database.php` (copy from `database.php.example`).
 
 ```bat
 "C:\Program Files\MySQL\MySQL Server 8.0\bin\mysql.exe" -u root -p -e "CREATE DATABASE IF NOT EXISTS whatsapp_bot CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
@@ -45,4 +45,4 @@ Default login: `admin` / password you set above.
 - [ ] Restrict admin by network / VPN
 - [ ] Database backups
 - [ ] Log retention
-- [ ] No committed secrets (`config.ini`, `config.local.php`)
+- [ ] No committed secrets (`config.ini`, `database.php`, `config.local.php`)

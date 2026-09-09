@@ -2,7 +2,8 @@
 
 ## Never commit
 
-- `web/includes/config.local.php` (DB password)
+- `web/includes/database.php` (DB password)
+- `web/includes/config.local.php` (optional local overrides)
 - `worker/config.ini` (worker API token)
 - `worker/browser_profile/` (WhatsApp Web session / cookies)
 - `web/uploads/media/` (user media)
@@ -11,8 +12,8 @@
 
 ## Safe examples in the repo
 
+- `web/includes/database.php.example`
 - `web/includes/config.local.php.example`
-- `database/database.example.php`
 - `worker/config.example.ini`
 
 ## After cloning

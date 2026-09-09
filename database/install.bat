@@ -11,7 +11,7 @@ if errorlevel 1 goto fail
 %MYSQL% -u root -p%DBPASS% %DBNAME% < "%~dp0install.sql"
 if errorlevel 1 goto fail
 echo Imported database\install.sql into %DBNAME%.
-echo Create web\includes\config.local.php, then run:
+echo Create web\includes\database.php (copy from database.php.example), then run:
 echo   php database\set_admin_password.php YourPassword
 pause
 exit /b 0

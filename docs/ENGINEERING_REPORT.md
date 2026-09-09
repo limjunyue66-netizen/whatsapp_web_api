@@ -120,7 +120,7 @@ See `docs/DEPLOYMENT.md` and `README.md`.
 
 Minimum path:
 
-1. Configure `web/includes/config.local.php` with MySQL password  
+1. Configure `web/includes/database.php` with MySQL credentials  
 2. Import schema + seed; set admin password  
 3. Open admin UI; register worker; copy token  
 4. Install Python worker; link WhatsApp; start worker  
