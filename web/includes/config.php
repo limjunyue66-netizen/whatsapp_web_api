@@ -2,29 +2,19 @@
 declare(strict_types=1);
 
 /**
- * Application configuration.
- * Copy values into config.local.php to override without committing secrets.
+ * App settings only — NOT database credentials.
+ * Database: edit web/includes/database.php only.
  */
-
 return [
     'app_name' => 'WhatsApp Bot Control Panel',
-    'app_env' => 'development', // development | production
+    'app_env' => 'development',
     'base_url' => 'http://localhost/whatsapp_web_api/web',
     'timezone' => 'Asia/Kuala_Lumpur',
-
-    'db' => [
-        'host' => '127.0.0.1',
-        'port' => 3306,
-        'name' => 'whatsapp_bot',
-        'user' => 'root',
-        'pass' => '',
-        'charset' => 'utf8mb4',
-    ],
 
     'session' => [
         'name' => 'wa_bot_sess',
         'lifetime_minutes' => 480,
-        'secure' => false, // set true behind HTTPS in production
+        'secure' => false, // true on HTTPS / cPanel
         'httponly' => true,
         'samesite' => 'Lax',
     ],

@@ -1,21 +1,19 @@
 <?php
 /**
- * REAL database config for this project (cPanel / local).
- *
- * Edit: name, user, pass, host
- * This file is gitignored — do not upload passwords to GitHub.
- *
- * cPanel tip:
- *   host = usually "localhost"
- *   name / user / pass = from cPanel → MySQL Databases
+ * ===== ONLY database connection file =====
+ * Copy to database.php and edit:
+ *   name  = cPanel database name
+ *   user  = cPanel database user
+ *   pass  = cPanel database password
+ *   host  = localhost
  */
 declare(strict_types=1);
 
 return [
     'host' => 'localhost',
     'port' => 3306,
-    'name' => 'whatsapp_bot',          // ← change to your cPanel DB name
-    'user' => 'root',                  // ← change to your cPanel DB user
-    'pass' => 'YOUR_MYSQL_PASSWORD',   // ← change to your cPanel DB password
+    'name' => 'YOUR_DB_NAME',
+    'user' => 'YOUR_DB_USER',
+    'pass' => 'YOUR_DB_PASSWORD',
     'charset' => 'utf8mb4',
 ];

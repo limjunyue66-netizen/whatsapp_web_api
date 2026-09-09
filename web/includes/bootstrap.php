@@ -3,31 +3,31 @@ declare(strict_types=1);
 
 $configBase = require __DIR__ . '/config.php';
 
-// Optional local overrides (base_url, app_env, session) — must NOT override DB on cPanel
-$localFile = __DIR__ . '/config.local.php';
-if (is_file($localFile)) {
-    $local = require $localFile;
-    if (is_array($local)) {
-        // Ignore any db block from config.local.php — use database.php only
-        unset($local['db']);
-        $configBase = array_replace_recursive($configBase, $local);
-    }
-}
-
-// Authoritative DB credentials: web/includes/database.php
+// ONLY database connection file in this project
 $dbFile = __DIR__ . '/database.php';
-if (is_file($dbFile)) {
-    $dbLocal = require $dbFile;
-    if (is_array($dbLocal)) {
-        if (isset($dbLocal['db']) && is_array($dbLocal['db'])) {
-            $configBase['db'] = array_replace($configBase['db'] ?? [], $dbLocal['db']);
-        } else {
-            $configBase['db'] = array_replace($configBase['db'] ?? [], $dbLocal);
-        }
-    }
-} else {
-    // Fall back to defaults in config.php (local dev only)
+if (!is_file($dbFile)) {
+    http_response_code(503);
+    header('Content-Type: text/plain; charset=utf-8');
+    echo "Missing web/includes/database.php\n";
+    echo "Create it and set host, name, user, pass.\n";
+    exit;
 }
+$dbLocal = require $dbFile;
+if (!is_array($dbLocal)) {
+    http_response_code(503);
+    header('Content-Type: text/plain; charset=utf-8');
+    echo "web/includes/database.php must return an array.\n";
+    exit;
+}
+// Support only flat keys: host, port, name, user, pass, charset
+$configBase['db'] = [
+    'host' => (string) ($dbLocal['host'] ?? 'localhost'),
+    'port' => (int) ($dbLocal['port'] ?? 3306),
+    'name' => (string) ($dbLocal['name'] ?? ''),
+    'user' => (string) ($dbLocal['user'] ?? ''),
+    'pass' => (string) ($dbLocal['pass'] ?? ''),
+    'charset' => (string) ($dbLocal['charset'] ?? 'utf8mb4'),
+];
 
 /** @var array<string,mixed> $CONFIG */
 $CONFIG = $configBase;

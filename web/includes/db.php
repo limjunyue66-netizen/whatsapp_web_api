@@ -35,10 +35,8 @@ function db(): PDO
             'user' => $cfg['user'] ?? '',
             'hint' => $e->getMessage(),
         ]);
-        $msg = 'Database unavailable. Check web/includes/database.php '
-            . '(host/name/user/pass) and import database/install.sql. '
-            . 'On cPanel: delete config.local.php if present, set host=localhost, '
-            . 'and ensure the DB user is added to the database.';
+        $msg = 'Database unavailable. Edit web/includes/database.php (host/name/user/pass) '
+            . 'and import database/install.sql. On cPanel: user must be added to the database, host=localhost.';
         if (function_exists('json_fail')) {
             $isApi = str_contains($_SERVER['SCRIPT_NAME'] ?? '', '/api/');
             $wantsJson = $isApi

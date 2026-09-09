@@ -33,16 +33,16 @@ PHP Web Control Panel → PHP REST API → MySQL
    php database\set_admin_password.php "YourStrongPassword"
    ```
    **cPanel:** create DB in MySQL Databases → phpMyAdmin → select DB → Import → `database/install.sql`
-2. Database config (edit real credentials — file is gitignored):
+2. Database config — **only** this file:
    ```bat
    copy web\includes\database.php.example web\includes\database.php
    ```
-   Then edit `web\includes\database.php` → `name` / `user` / `pass` / `host`.
-   Optional: `copy web\includes\config.local.php.example web\includes\config.local.php` for `base_url`.
+   Edit `web\includes\database.php` → `name` / `user` / `pass` / `host`.
    Copy worker config:
    ```bat
    copy worker\config.example.ini worker\config.ini
    ```
+   On cPanel also set `base_url` in `web/includes/config.php` to your HTTPS site URL.
 3. Open `http://localhost/whatsapp_web_api/web/`
 4. Login with the admin password you set above, then change it if needed.
 5. Admin → Workers → Register → copy token **once** into `worker\config.ini`

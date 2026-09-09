@@ -1,12 +1,10 @@
-# Secrets & local config (NEVER commit real values)
-web/includes/config.local.php
+# Secrets (NEVER commit)
 web/includes/database.php
 worker/config.ini
 worker/browser_profile/
 worker/temp_media/
 *.env
 .env.*
-!**/.env.example
 
 # Runtime / logs / diagnostics
 web/uploads/media/*
