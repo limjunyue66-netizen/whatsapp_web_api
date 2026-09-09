@@ -1,0 +1,40 @@
+# Secrets & local config (NEVER commit real values)
+web/includes/config.local.php
+worker/config.ini
+worker/browser_profile/
+worker/temp_media/
+*.env
+.env.*
+!**/.env.example
+
+# Runtime / logs / diagnostics
+web/uploads/media/*
+!web/uploads/media/.htaccess
+!web/uploads/media/.gitkeep
+web/storage/logs/*
+!web/storage/logs/.htaccess
+!web/storage/logs/.gitkeep
+worker/logs/
+worker/screenshots/
+worker/worker.log
+worker/diag_*.png
+*.log
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+worker/.venv/
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.tmp
+
+# Local scratch
+worker/_patch_*.py
+worker/temp_clip_test.*
