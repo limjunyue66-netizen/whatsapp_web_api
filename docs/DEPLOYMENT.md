@@ -5,10 +5,12 @@
 MySQL 8+ must be running. Set credentials in `web/includes/config.local.php` (copy from `.example`).
 
 ```bat
-"C:\Program Files\MySQL\MySQL Server 8.0\bin\mysql.exe" -u root -p < database\schema.sql
-"C:\Program Files\MySQL\MySQL Server 8.0\bin\mysql.exe" -u root -p < database\seed.sql
+"C:\Program Files\MySQL\MySQL Server 8.0\bin\mysql.exe" -u root -p -e "CREATE DATABASE IF NOT EXISTS whatsapp_bot CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+"C:\Program Files\MySQL\MySQL Server 8.0\bin\mysql.exe" -u root -p whatsapp_bot < database\install.sql
 php database\set_admin_password.php "YourStrongPassword"
 ```
+
+**cPanel:** MySQL Databases → create DB → phpMyAdmin → select DB → Import → `database/install.sql` only.
 
 Default login: `admin` / password you set above.
 

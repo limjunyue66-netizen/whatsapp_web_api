@@ -1,13 +1,15 @@
--- WhatsApp Bot Control Panel — MySQL 8+ / MariaDB 10.4+
--- Timestamps stored in UTC. Application timezone: Asia/Kuala_Lumpur.
+-- WhatsApp Bot Control Panel — ONE SQL for cPanel / phpMyAdmin
+-- MySQL 8+ or MariaDB 10.4+
+--
+-- How to import on cPanel:
+--   1. Create an empty database + user in cPanel → MySQL Databases
+--   2. Open phpMyAdmin → select THAT database
+--   3. Import this file only (install.sql)
+--
+-- Do NOT use CREATE DATABASE here — shared hosting already created the DB.
 
 SET NAMES utf8mb4;
 SET time_zone = '+00:00';
-
-CREATE DATABASE IF NOT EXISTS whatsapp_bot
-  CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
-USE whatsapp_bot;
 
 CREATE TABLE users (
   id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -23,7 +25,7 @@ CREATE TABLE users (
   created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   UNIQUE KEY uq_users_username (username)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE workers (
   id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -45,7 +47,7 @@ CREATE TABLE workers (
   UNIQUE KEY uq_workers_name (name),
   KEY idx_workers_heartbeat (last_heartbeat_at),
   KEY idx_workers_enabled_status (is_enabled, status)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE contacts (
   id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -61,7 +63,7 @@ CREATE TABLE contacts (
   UNIQUE KEY uq_contacts_phone (phone_e164),
   KEY idx_contacts_active_name (is_active, name),
   CONSTRAINT fk_contacts_user FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE SET NULL
-) ENGINE=InnoDB;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE contact_groups (
   id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -72,7 +74,7 @@ CREATE TABLE contact_groups (
   updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   UNIQUE KEY uq_contact_groups_name (name),
   CONSTRAINT fk_groups_user FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE SET NULL
-) ENGINE=InnoDB;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE contact_group_members (
   group_id INT UNSIGNED NOT NULL,
@@ -81,7 +83,7 @@ CREATE TABLE contact_group_members (
   PRIMARY KEY (group_id, contact_id),
   CONSTRAINT fk_cgm_group FOREIGN KEY (group_id) REFERENCES contact_groups(id) ON DELETE CASCADE,
   CONSTRAINT fk_cgm_contact FOREIGN KEY (contact_id) REFERENCES contacts(id) ON DELETE CASCADE
-) ENGINE=InnoDB;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE message_templates (
   id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -92,7 +94,7 @@ CREATE TABLE message_templates (
   updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   UNIQUE KEY uq_templates_name (name),
   CONSTRAINT fk_templates_user FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE SET NULL
-) ENGINE=InnoDB;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE media_files (
   id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -107,7 +109,7 @@ CREATE TABLE media_files (
   UNIQUE KEY uq_media_stored (stored_name),
   KEY idx_media_sha (sha256),
   CONSTRAINT fk_media_user FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE SET NULL
-) ENGINE=InnoDB;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE campaigns (
   id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -133,7 +135,7 @@ CREATE TABLE campaigns (
   CONSTRAINT fk_campaigns_template FOREIGN KEY (template_id) REFERENCES message_templates(id) ON DELETE SET NULL,
   CONSTRAINT fk_campaigns_media FOREIGN KEY (media_id) REFERENCES media_files(id) ON DELETE SET NULL,
   CONSTRAINT fk_campaigns_user FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE SET NULL
-) ENGINE=InnoDB;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE message_jobs (
   id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -163,7 +165,7 @@ CREATE TABLE message_jobs (
   CONSTRAINT fk_jobs_contact FOREIGN KEY (contact_id) REFERENCES contacts(id) ON DELETE SET NULL,
   CONSTRAINT fk_jobs_media FOREIGN KEY (media_id) REFERENCES media_files(id) ON DELETE SET NULL,
   CONSTRAINT fk_jobs_worker FOREIGN KEY (worker_id) REFERENCES workers(id) ON DELETE SET NULL
-) ENGINE=InnoDB;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE message_logs (
   id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -179,7 +181,7 @@ CREATE TABLE message_logs (
   KEY idx_msg_logs_job (job_id),
   KEY idx_msg_logs_campaign (campaign_id),
   CONSTRAINT fk_msg_logs_job FOREIGN KEY (job_id) REFERENCES message_jobs(id) ON DELETE SET NULL
-) ENGINE=InnoDB;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE audit_logs (
   id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -195,13 +197,13 @@ CREATE TABLE audit_logs (
   KEY idx_audit_created (created_at),
   KEY idx_audit_action (action),
   KEY idx_audit_user (user_id)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE system_settings (
   setting_key VARCHAR(80) PRIMARY KEY,
   setting_value TEXT NOT NULL,
   updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE login_attempts (
   id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -211,4 +213,39 @@ CREATE TABLE login_attempts (
   created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   KEY idx_login_ip_time (ip_address, created_at),
   KEY idx_login_user_time (username, created_at)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Default admin user (change password after first login)
+-- Temporary hash is a placeholder — set a real password with:
+--   php database/set_admin_password.php "YourStrongPassword"
+INSERT INTO users (username, password_hash, display_name, role, permissions_json, is_active)
+VALUES (
+  'admin',
+  '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
+  'System Admin',
+  'admin',
+  '["manage_contacts","manage_campaigns","send_messages","manage_workers","manage_settings","view_logs","manage_templates","manage_media"]',
+  1
+)
+ON DUPLICATE KEY UPDATE username = username;
+
+INSERT INTO system_settings (setting_key, setting_value) VALUES
+('app_timezone', 'Asia/Kuala_Lumpur'),
+('default_country_code', '60'),
+('min_delay_seconds', '3'),
+('max_delay_seconds', '8'),
+('max_messages_per_batch', '20'),
+('max_messages_per_hour', '60'),
+('max_messages_per_day', '400'),
+('pause_between_batches_seconds', '60'),
+('max_retry_attempts', '3'),
+('worker_heartbeat_timeout_seconds', '90'),
+('stale_job_timeout_seconds', '300'),
+('media_max_bytes', '10485760'),
+('session_lifetime_minutes', '480'),
+('login_max_attempts', '8'),
+('login_lockout_minutes', '15'),
+('large_campaign_confirm_threshold', '50'),
+('app_name', 'WhatsApp Bot Control Panel'),
+('disclaimer', 'Consent-based messaging only. Unofficial WhatsApp Web automation. At-least-once delivery; not exactly-once.')
+ON DUPLICATE KEY UPDATE setting_value = VALUES(setting_value);

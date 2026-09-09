@@ -26,12 +26,13 @@ PHP Web Control Panel → PHP REST API → MySQL
 
 ## Quick start (XAMPP)
 
-1. Import DB:
+1. Import DB (`database/install.sql` only — tables + default admin/settings):
    ```bat
-   c:\xampp\mysql\bin\mysql.exe -u root -p < database\schema.sql
-   c:\xampp\mysql\bin\mysql.exe -u root -p < database\seed.sql
+   c:\xampp\mysql\bin\mysql.exe -u root -p -e "CREATE DATABASE IF NOT EXISTS whatsapp_bot CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+   c:\xampp\mysql\bin\mysql.exe -u root -p whatsapp_bot < database\install.sql
    php database\set_admin_password.php "YourStrongPassword"
    ```
+   **cPanel:** create DB in MySQL Databases → phpMyAdmin → select DB → Import → `database/install.sql`
 2. Copy example configs (do **not** commit the filled copies):
    ```bat
    copy web\includes\config.local.php.example web\includes\config.local.php

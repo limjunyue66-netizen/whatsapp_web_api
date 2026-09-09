@@ -64,7 +64,7 @@ Entire project created under:
 
 ## E. Database changes
 
-Single schema: `database/schema.sql` including users, workers, contacts, groups, templates, media, campaigns, message_jobs, message_logs, audit_logs, system_settings, login_attempts.
+Single install file: `database/install.sql` (tables + default admin/settings) for cPanel/phpMyAdmin — users, workers, contacts, groups, templates, media, campaigns, message_jobs, message_logs, audit_logs, system_settings, login_attempts.
 
 Indexes on claim path (`status, scheduled_at, id`), stale (`status, claimed_at`), uniqueness on phones and worker names.
 

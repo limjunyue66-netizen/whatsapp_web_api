@@ -6,9 +6,8 @@
  * 1. Copy values into: web/includes/config.local.php
  *    (there is also web/includes/config.local.php.example)
  * 2. Never commit real passwords or production hosts.
- * 3. Import schema first:
- *      mysql -u root -p < database/schema.sql
- *      mysql -u root -p < database/seed.sql
+ * 3. Import schema first (cPanel: phpMyAdmin → select DB → Import install.sql):
+ *      mysql -u USER -p DBNAME < database/install.sql
  *      php database/set_admin_password.php "YourStrongPassword"
  */
 
