@@ -2,6 +2,21 @@
 declare(strict_types=1);
 
 $configBase = require __DIR__ . '/config.php';
+
+// Preferred: web/includes/database.php (dbname / user / password for cPanel)
+$dbFile = __DIR__ . '/database.php';
+if (is_file($dbFile)) {
+    $dbLocal = require $dbFile;
+    if (is_array($dbLocal)) {
+        // Accept either flat keys or ['db' => [...]]
+        if (isset($dbLocal['db']) && is_array($dbLocal['db'])) {
+            $configBase = array_replace_recursive($configBase, $dbLocal);
+        } else {
+            $configBase['db'] = array_replace($configBase['db'] ?? [], $dbLocal);
+        }
+    }
+}
+
 $localFile = __DIR__ . '/config.local.php';
 if (is_file($localFile)) {
     $local = require $localFile;

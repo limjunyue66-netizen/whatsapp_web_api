@@ -27,7 +27,7 @@ function db(): PDO
     } catch (PDOException $e) {
         app_log('error', 'db_connect_failed', ['code' => $e->getCode()]);
         if (function_exists('json_fail')) {
-            json_fail('Database unavailable. Check config.local.php and import schema.', 503);
+            json_fail('Database unavailable. Check web/includes/database.php and import database/install.sql.', 503);
         }
         throw $e;
     }

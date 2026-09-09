@@ -1,20 +1,14 @@
 <?php
 /**
- * Copy to config.local.php and set your MySQL password.
- * config.local.php is gitignored.
+ * Optional local overrides (base_url, app_env, session).
+ * Database credentials: edit web/includes/database.php instead.
+ *
+ * Copy to config.local.php if needed. config.local.php is gitignored.
  */
 return [
-    'app_env' => 'development',
-    'base_url' => 'http://localhost/whatsapp_web_api/web',
-    'db' => [
-        'host' => '127.0.0.1',
-        'port' => 3306,
-        'name' => 'whatsapp_bot',
-        'user' => 'root',
-        'pass' => 'YOUR_MYSQL_PASSWORD',
-        'charset' => 'utf8mb4',
-    ],
+    'app_env' => 'production',
+    'base_url' => 'https://YOUR-DOMAIN.com/whatsapp_web_api/web',
     'session' => [
-        'secure' => false, // true when serving over HTTPS
+        'secure' => true, // true when serving over HTTPS
     ],
 ];
