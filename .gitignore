@@ -37,3 +37,6 @@ Thumbs.db
 # Local scratch
 worker/_patch_*.py
 worker/temp_clip_test.*
+
+whatsapp_web_api.zip
+*.zip
