@@ -1,14 +1,13 @@
 <?php
 /**
  * Optional local overrides (base_url, app_env, session).
- * Database credentials: edit web/includes/database.php instead.
- *
- * Copy to config.local.php if needed. config.local.php is gitignored.
+ * Do NOT put database credentials here — use database.php.
+ * On cPanel you can omit this file entirely.
  */
 return [
     'app_env' => 'production',
-    'base_url' => 'https://YOUR-DOMAIN.com/whatsapp_web_api/web',
+    'base_url' => 'https://junyuelim.kolejsynergy.com/whatsapp_web_api/web',
     'session' => [
-        'secure' => true, // true when serving over HTTPS
+        'secure' => true,
     ],
 ];

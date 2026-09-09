@@ -25,11 +25,35 @@ function db(): PDO
         ]);
         $pdo->exec("SET time_zone = '+00:00'");
     } catch (PDOException $e) {
-        app_log('error', 'db_connect_failed', ['code' => $e->getCode()]);
+        app_log('error', 'db_connect_failed', [
+            'code' => $e->getCode(),
+            'sqlstate' => $e->errorInfo[0] ?? null,
+            'driver_code' => $e->errorInfo[1] ?? null,
+            // Never log password; include host/name/user for cPanel debugging
+            'host' => $cfg['host'] ?? '',
+            'name' => $cfg['name'] ?? '',
+            'user' => $cfg['user'] ?? '',
+            'hint' => $e->getMessage(),
+        ]);
+        $msg = 'Database unavailable. Check web/includes/database.php '
+            . '(host/name/user/pass) and import database/install.sql. '
+            . 'On cPanel: delete config.local.php if present, set host=localhost, '
+            . 'and ensure the DB user is added to the database.';
         if (function_exists('json_fail')) {
-            json_fail('Database unavailable. Check web/includes/database.php and import database/install.sql.', 503);
+            $isApi = str_contains($_SERVER['SCRIPT_NAME'] ?? '', '/api/');
+            $wantsJson = $isApi
+                || str_contains($_SERVER['HTTP_ACCEPT'] ?? '', 'application/json');
+            if ($wantsJson) {
+                json_fail($msg, 503);
+            }
         }
-        throw $e;
+        http_response_code(503);
+        header('Content-Type: text/plain; charset=utf-8');
+        echo $msg . "\n";
+        if ((app_config('app_env') ?? '') !== 'production') {
+            echo 'Detail: ' . $e->getMessage() . "\n";
+        }
+        exit;
     }
     return $pdo;
 }

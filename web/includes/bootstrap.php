@@ -3,26 +3,30 @@ declare(strict_types=1);
 
 $configBase = require __DIR__ . '/config.php';
 
-// Preferred: web/includes/database.php (dbname / user / password for cPanel)
-$dbFile = __DIR__ . '/database.php';
-if (is_file($dbFile)) {
-    $dbLocal = require $dbFile;
-    if (is_array($dbLocal)) {
-        // Accept either flat keys or ['db' => [...]]
-        if (isset($dbLocal['db']) && is_array($dbLocal['db'])) {
-            $configBase = array_replace_recursive($configBase, $dbLocal);
-        } else {
-            $configBase['db'] = array_replace($configBase['db'] ?? [], $dbLocal);
-        }
-    }
-}
-
+// Optional local overrides (base_url, app_env, session) — must NOT override DB on cPanel
 $localFile = __DIR__ . '/config.local.php';
 if (is_file($localFile)) {
     $local = require $localFile;
     if (is_array($local)) {
+        // Ignore any db block from config.local.php — use database.php only
+        unset($local['db']);
         $configBase = array_replace_recursive($configBase, $local);
     }
+}
+
+// Authoritative DB credentials: web/includes/database.php
+$dbFile = __DIR__ . '/database.php';
+if (is_file($dbFile)) {
+    $dbLocal = require $dbFile;
+    if (is_array($dbLocal)) {
+        if (isset($dbLocal['db']) && is_array($dbLocal['db'])) {
+            $configBase['db'] = array_replace($configBase['db'] ?? [], $dbLocal['db']);
+        } else {
+            $configBase['db'] = array_replace($configBase['db'] ?? [], $dbLocal);
+        }
+    }
+} else {
+    // Fall back to defaults in config.php (local dev only)
 }
 
 /** @var array<string,mixed> $CONFIG */
